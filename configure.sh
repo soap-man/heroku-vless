@@ -14,83 +14,31 @@ rm -rf /tmp/v2ray
 install -d /usr/local/etc/v2ray
 cat << EOF > /usr/local/etc/v2ray/config.json
 {
-  "outbound": {
-    "streamSettings": null,
-    "tag": null,
-    "protocol": "freedom",
-    "mux": null,
-    "settings": null
-  },
-  "inboundDetour": null,
-  "inbound": {
-    "streamSettings": {
-      "network": "ws",
-      "kcpSettings": null,
-      "wsSettings": {
-        "headers": {
-          "host": "heroku-sunset-cf93.soapmans.workers.dev"
-        },
-        "path": ""
-      },
-      "tcpSettings": null,
-      "tlsSettings": {},
-      "security": ""
-    },
-    "listen": null,
-    "protocol": "vmess",
-    "port": 5888,
-    "settings": {
-      "ip": null,
-      "udp": true,
-      "clients": [
+    "inbounds": [
         {
-          "alterId": 100,
-          "security": "aes-128-gcm",
-          "id": "163b3ae0-29ba-4c02-bfae-0e07465a2466"
+            "port": $PORT,
+            "protocol": "vless",
+            "settings": {
+                "clients": [
+                    {
+                        "id": "$ID",
+                        "flow": "xtls-rprx-direct",
+                        "level": 0,
+                        "email": "soapmans@icloud.com"
+                    }
+                ],
+                "decryption": "none"
+            },
+            "streamSettings": {
+                "network": "ws"
+            }
         }
-      ],
-      "auth": null
-    }
-  },
-  "outboundDetour": [
-    {
-      "tag": "blocked",
-      "protocol": "blackhole",
-      "settings": null
-    }
-  ],
-  "routing": {
-    "strategy": "rules",
-    "settings": {
-      "rules": [
+    ],
+    "outbounds": [
         {
-          "ip": [
-            "0.0.0.0/8",
-            "10.0.0.0/8",
-            "100.64.0.0/10",
-            "127.0.0.0/8",
-            "169.254.0.0/16",
-            "172.16.0.0/12",
-            "192.0.0.0/24",
-            "192.0.2.0/24",
-            "192.168.0.0/16",
-            "198.18.0.0/15",
-            "198.51.100.0/24",
-            "203.0.113.0/24",
-            "::1/128",
-            "fc00::/7",
-            "fe80::/10"
-          ],
-          "domain": null,
-          "type": "field",
-          "port": null,
-          "outboundTag": "blocked"
+            "protocol": "freedom"
         }
-      ],
-      "domainStrategy": null
-    }
-  },
-  "dns": null
+    ]
 }
 EOF
 
